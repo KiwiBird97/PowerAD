@@ -1,0 +1,5 @@
+SamAccountName,GivenName,Surname,OU,Title,Department,Password,Groups
+jdoe,John,Doe,Departments\IT,IT Administrator,IT,,"SG-IT-Admins;SG-All-Employees;SG-ServerAdmins"
+asmith,Alice,Smith,Departments\HR,HR Manager,HR,,"SG-HR-Staff;SG-All-Employees"
+bwhite,Bob,White,Departments\Finance,Financial Analyst,Finance,,"SG-Finance-Staff;SG-All-Employees"
+ctaylor,Carol,Taylor,Departments\Sales,Sales Rep,Sales,,"SG-Sales-Staff;SG-All-Employees"

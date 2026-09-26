@@ -1,0 +1,14 @@
+# PowerShell
+*.ps1xml.bak
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+
+# Secrets - never commit real credentials; keep Config.psd1 placeholders only
+*.secrets.psd1
