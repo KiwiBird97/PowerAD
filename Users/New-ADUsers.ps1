@@ -26,7 +26,6 @@
     .\New-ADUsers.ps1 -CsvPath .\Users.csv
     Creates users from the bundled CSV template.
 #>
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'Initial account passwords are provided via config/CSV for non-interactive provisioning.')]
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [string]$ConfigPath = (Join-Path $PSScriptRoot '..\Config\Config.psd1'),
@@ -40,6 +39,16 @@ Import-Module ActiveDirectory -ErrorAction Stop
 $config = Import-PowerADConfig -Path $ConfigPath
 $baseDN = Get-PowerADBaseDN -DNSName $config.Domain.DNSName
 $defaultPassword = $config.DefaultUserPassword
+
+function ConvertTo-PowerADSecureStringFromPlainText {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'Initial account passwords are provided via config/CSV for non-interactive provisioning.')]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Text
+    )
+
+    ConvertTo-SecureString $Text -AsPlainText -Force
+}
 
 if ($CsvPath) {
     if (-not (Test-Path $CsvPath)) { throw "CSV file not found: $CsvPath" }
@@ -90,7 +99,7 @@ foreach ($user in $users) {
         }
 
         if ($PSCmdlet.ShouldProcess($user.SamAccountName, "Create AD user in $ouDN")) {
-            $securePwd = ConvertTo-SecureString $user.Password -AsPlainText -Force
+            $securePwd = ConvertTo-PowerADSecureStringFromPlainText -Text $user.Password
             New-ADUser -Name $displayName `
                 -GivenName $user.GivenName `
                 -Surname $user.Surname `
