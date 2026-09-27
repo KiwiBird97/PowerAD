@@ -26,6 +26,7 @@
     .\New-ADUsers.ps1 -CsvPath .\Users.csv
     Creates users from the bundled CSV template.
 #>
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'Initial account passwords are provided via config/CSV for non-interactive provisioning.')]
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [string]$ConfigPath = (Join-Path $PSScriptRoot '..\Config\Config.psd1'),

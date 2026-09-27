@@ -24,6 +24,7 @@
     Must be run locally on the target Windows Server 2022 machine, from an
     elevated PowerShell session. Requires a restart to complete promotion.
 #>
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'Safe mode password is supplied by configuration for unattended domain bootstrap.')]
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [string]$ConfigPath = (Join-Path $PSScriptRoot '..\Config\Config.psd1'),
