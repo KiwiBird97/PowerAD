@@ -51,7 +51,17 @@ foreach ($feature in $features) {
 # 2. Promote the server to a domain controller -------------------------------
 Import-Module ADDSDeployment -ErrorAction Stop
 
-$safeModePwd = ConvertTo-SecureString $domain.SafeModeAdminPwd -AsPlainText -Force
+function ConvertTo-PowerADSecureStringFromPlainText {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'Safe mode password is supplied by configuration for unattended domain bootstrap.')]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Text
+    )
+
+    ConvertTo-SecureString $Text -AsPlainText -Force
+}
+
+$safeModePwd = ConvertTo-PowerADSecureStringFromPlainText -Text $domain.SafeModeAdminPwd
 
 $installParams = @{
     CreateDnsDelegation           = $false
